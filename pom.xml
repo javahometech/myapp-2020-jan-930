@@ -7,6 +7,7 @@
 	<version>8.3.0</version>
 	<name>Java Home myweb</name>
 	<url>http://maven.apache.org</url>
+	<hari>Hari</hari>
 	
 	<properties>
 		<docker.image.prefix>kammana</docker.image.prefix>
