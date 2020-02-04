@@ -47,4 +47,12 @@ pipeline{
             }
         }
     }
+    post{
+        success{
+            script{
+                def pomFile = readMavenPom file: 'pom.xml'
+                archiveArtifacts "target/myweb-${pomFile.version}.war"
+            }
+        }
+    }
 }
