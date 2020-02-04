@@ -11,11 +11,13 @@ pipeline{
         }
         stage('Upload Artifacts to Nexus'){
             steps{
+                def pomFile = readMavenPom file: 'pom.xml'
+                
                 nexusArtifactUploader artifacts: [
                         [
                             artifactId: 'myweb', 
                             classifier: '', file: 
-                            'target/myweb-8.5.0.war', type: 'jar'
+                            "target/myweb-${pomFile.version}.war", type: 'war'
                         ]
                     ], 
                     credentialsId: 'nexus3', 
@@ -24,7 +26,7 @@ pipeline{
                     nexusVersion: 'nexus3', 
                     protocol: 'http', 
                     repository: 'myapp-release', 
-                    version: '8.5.0'
+                    version: "${pomFile.version}"
 
             }
         }
