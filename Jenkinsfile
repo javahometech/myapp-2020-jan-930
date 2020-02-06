@@ -1,7 +1,11 @@
 pipeline{
+
     agent any
     tools {
         maven 'maven3'
+    }
+    parameters {
+        booleanParam defaultValue: false, description: 'Do you wanna rollback the deployment?', name: 'rollback'
     }
     stages{
         stage('Maven Build'){
