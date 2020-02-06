@@ -44,7 +44,12 @@ pipeline{
         stage("Deploy - Dev"){
             steps{
                 sshagent(['tomcat-dev']) {
-                    sh "scp -o StrictHostKeyChecking=no target/myweb*.war ec2-user@172.31.0.38:/opt/tomcat8/webapps/myweb.war"
+                    def warFilePath = "target/myweb*.war"
+                    if(params.rollback == true){
+                        echo "Rollbacking to ${env.JENKINS_HOME}/jobs/${env.JOB_NAME}/builds/${previousBuild.id}/archive/${warFilePath}"
+                        warFilePath = "${env.JENKINS_HOME}/jobs/${env.JOB_NAME}/builds/${previousBuild.id}"
+                    }
+                    sh "scp -o StrictHostKeyChecking=no ${warFilePath} ec2-user@172.31.0.38:/opt/tomcat8/webapps/myweb.war"
                     sh "ssh ec2-user@172.31.0.38 /opt/tomcat8/bin/shutdown.sh"
                     sh "ssh ec2-user@172.31.0.38 /opt/tomcat8/bin/startup.sh"
                 }
