@@ -65,5 +65,8 @@ pipeline{
                 archiveArtifacts "target/myweb-${pomFile.version}.war"
             }
         }
+        failure {
+            mail  body: 'The following Jenkins Job failed', subject: 'Jenkins Job', to: 'javahometechnologies@gmail.com'
+        }
     }
 }
