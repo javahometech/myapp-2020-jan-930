@@ -70,6 +70,11 @@ pipeline{
     }
     post{
         success{
+            when{
+                expression{
+                    params.rollback == false
+                }
+            }
             script{
                 def pomFile = readMavenPom file: 'pom.xml'
                 archiveArtifacts "target/myweb-${pomFile.version}.war"
