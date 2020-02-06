@@ -9,11 +9,21 @@ pipeline{
     }
     stages{
         stage('Maven Build'){
+            when{
+                expression{
+                    params.rollback == false
+                }
+            }
             steps{
                 sh script: 'mvn clean package'
             }
         }
         stage('Upload Artifacts to Nexus'){
+            when{
+                expression{
+                    params.rollback == false
+                }
+            }
             steps{
                 script{
                     def pomFile = readMavenPom file: 'pom.xml'
