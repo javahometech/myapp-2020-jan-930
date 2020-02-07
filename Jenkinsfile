@@ -94,7 +94,7 @@ pipeline{
                 }
             }
             steps{
-                input 'Do you wanna deploy to Prod?'
+                input message: 'Do you wanna deploy to Prod?', submitter: 'prakash'
                 echo "Deploy to Prod"
             }
         }
