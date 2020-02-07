@@ -12,8 +12,8 @@ pipeline{
         stage('Maven Build'){
             when{
                 expression{
-                    params.rollback  false
-                    params.appEnv 'dev'
+                    params.rollback  == false
+                    params.appEnv == 'dev'
                 }
             }
             steps{
