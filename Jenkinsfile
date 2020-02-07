@@ -5,6 +5,7 @@ pipeline{
         maven 'maven3'
     }
     parameters {
+        choice choices: ['dev', 'uat', 'prod'], description: 'Choose the environment to deploy your artifact', name: 'appEnv'
         booleanParam defaultValue: false, description: 'Do you wanna rollback the deployment?', name: 'rollback'
     }
     stages{
@@ -52,6 +53,11 @@ pipeline{
         }
 
         stage("Deploy - Dev"){
+            when{
+                expression{
+                    params.appEnv == 'dev'
+                }
+            }
             steps{
                 script{
                     sshagent(['tomcat-dev']) {
@@ -67,17 +73,37 @@ pipeline{
                 }
             }
         }
+
+        stage("Deploy - UAT"){
+            when{
+                expression{
+                    params.appEnv == 'uat'
+                }
+            }
+            steps{
+                echo "Deploy to UAT"
+            }
+        }
+
+        stage("Deploy - Prod"){
+            when{
+                expression{
+                    params.appEnv == 'prod'
+                }
+            }
+            steps{
+                echo "Deploy to Prod"
+            }
+        }
     }
     post{
         success{
-            when{
-                expression{
-                    params.rollback == false
-                }
-            }
+            
             script{
-                def pomFile = readMavenPom file: 'pom.xml'
-                archiveArtifacts "target/myweb-${pomFile.version}.war"
+                if(params.rollback == false){
+                    def pomFile = readMavenPom file: 'pom.xml'
+                    archiveArtifacts "target/myweb-${pomFile.version}.war"
+                }
             }
         }
         failure {
