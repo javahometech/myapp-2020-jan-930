@@ -24,6 +24,7 @@ pipeline{
             when{
                 expression{
                     params.rollback == false
+                    params.appEnv == 'dev'
                 }
             }
             steps{
