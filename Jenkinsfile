@@ -94,6 +94,7 @@ pipeline{
                 }
             }
             steps{
+                input 'Do you wanna deploy to Prod?'
                 echo "Deploy to Prod"
             }
         }
