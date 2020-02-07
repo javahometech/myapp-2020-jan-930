@@ -23,7 +23,8 @@ pipeline{
         stage('Upload Artifacts to Nexus'){
             when{
                 expression{
-                    params.rollback == false
+                    params.rollback  false
+                    params.appEnv 'dev'
                 }
             }
             steps{
