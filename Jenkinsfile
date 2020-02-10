@@ -20,6 +20,13 @@ pipeline{
                 sh script: 'mvn clean package'
             }
         }
+        stage('Sonar Publish'){
+            steps{
+                withSonarQubeEnv('sonar7') {
+                    sh 'mvn clean sonar:sonar'
+                }
+            }
+        }
         stage('Upload Artifacts to Nexus'){
             when{
                 expression{
