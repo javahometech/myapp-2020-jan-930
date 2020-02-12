@@ -20,9 +20,4 @@ public class Calculator {
 	public int sub(int i, int j){
 		return i-j;
 	}
-	
-	public void demo(){
-		String s1 = null;
-		s1.toString();
-	}
 }
