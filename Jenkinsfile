@@ -23,7 +23,7 @@ pipeline{
         stage('Sonar Publish'){
             steps{
                 withSonarQubeEnv('sonar7') {
-                    sh 'mvn clean sonar:sonar'
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
