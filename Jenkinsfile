@@ -9,24 +9,34 @@ pipeline{
         booleanParam defaultValue: false, description: 'Do you wanna rollback the deployment?', name: 'rollback'
     }
     stages{
-        stage('Maven Build'){
-            when{
-                expression{
-                    params.rollback  == false
-                    params.appEnv == 'dev'
+
+        stage('Build And Sonar'){
+            parallel{
+                stage('Maven Build'){
+                    when{
+                        expression{
+                            params.rollback  == false
+                            params.appEnv == 'dev'
+                        }
+                    }
+                    steps{
+                        sh script: 'mvn clean package'
+                    }
                 }
-            }
-            steps{
-                sh script: 'mvn clean package'
-            }
-        }
-        stage('Sonar Publish'){
-            steps{
-                withSonarQubeEnv('sonar7') {
-                    sh 'mvn sonar:sonar'
+
+                stage('Sonar Publish'){
+                    steps{
+                        withSonarQubeEnv('sonar7') {
+                            sh 'mvn sonar:sonar'
+                        }
+                    }
                 }
+
             }
+
         }
+        
+        
 
         stage("Quality Gate") {
             steps {
